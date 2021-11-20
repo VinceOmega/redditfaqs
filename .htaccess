@@ -1,8 +1,29 @@
 RewriteEngine On
+RewriteBase /
+
+AllowOverride all
+
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^([^/]+)/$ $1.php
 RewriteRule ^([^/]+)/([^/]+)/$ /$1/$2.php
+
+#pass through for all existing real files and real directories
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule .?	- [NS,L]
+
+RewriteCond %{REQUEST_FILENAME} .*\.map$
+RewriteCond %{REQUEST_FILENAME} .*\.min.*$
+RewriteRule .?  - [NS,L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !(\.[a-zA-Z0-9]{1,5}|/)$
 RewriteRule (.*)$ /$1/ [R=301,L]e
+
+#get all slugs
+RewriteRule  ^\/?(.+\/)?$ .\/index.cfm?slugCollection=$1
+
+#The line below represents the url scheme used for the admin panel. Directory, route and page.
+#RewriteRule ^(.*)\/(.*)\/(.*)/(.*)$   	    .\/index.cfm?dir=$1&route=$2&page=$3&tab=$4 [QSA,NC,L] 

@@ -1,3 +1,5 @@
 <?php
 
-namespace application\models
+namespace application\models{
+    
+}
